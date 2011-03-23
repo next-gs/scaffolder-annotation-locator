@@ -9,9 +9,10 @@ group :development do
   gem "bundler",  "~> 1.0"
   gem "jeweler",  "~> 1.5"
 
-  gem "rspec",    "~> 2.4"
-  gem "cucumber", "~> 0.9"
-  gem "aruba",    "~> 0.2"
+  gem "rspec",                   "~> 2.4"
+  gem "scaffolder-test-helpers", "~> 0.1"
+  gem "cucumber",                "~> 0.9"
+  gem "aruba",                   "~> 0.2"
 
   gem "yard",     "~> 0.6"
 end
