@@ -19,6 +19,10 @@ describe Scaffolder::AnnotationLocator do
     before do
       entries = [{:name => 'seq1', :nucleotides => 'ATGC'}]
 
+
+      annotations = [{ :source => 'contig1',
+        :start => 3, :stop => 4, :phase => '+', :id => 1}]
+      @gff3_file = generate_gff3_file(annotations)
       @scaffold_file = Tempfile.new("scaffold").path
       @sequence_file = Tempfile.new("sequence").path
 
@@ -26,11 +30,11 @@ describe Scaffolder::AnnotationLocator do
       write_sequence_file(entries,@sequence_file)
     end
 
-    it "should be initializable with scaffold and gff3 file" do
-      expect {
-        described_class.new(@scaffold_file, @sequence_file, @gff3_file)
-      }.to_not raise_error
+    subject do
+      described_class.new(@scaffold_file, @sequence_file, @gff3_file).first
     end
+
+    its(:start){ should == 3 }
 
   end
 
