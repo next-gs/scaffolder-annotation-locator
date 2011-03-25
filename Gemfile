@@ -2,7 +2,6 @@ source "http://rubygems.org"
 
 group :default do
   gem "scaffolder", "~> 0.4"
-  gem "bio-gff3",   "~> 0.8"
 end
 
 group :development do
