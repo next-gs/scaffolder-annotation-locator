@@ -2,15 +2,16 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 
 describe Scaffolder::AnnotationLocator do
 
-
   def generate_gff3_file(annotations)
-    tmp = Tempfile.new(Time.new).path
-    File.open(tmp,'w') do |out|
-      out.puts "##gff-version 3"
-      out.print(annotations.map do |a|
-        [a[:seqname],'.','CDS',a[:start],a[:end],'.',a[:strand],a[:phase]]*"\t"
-      end * '\n')
+    gff = Bio::GFF::GFF3.new
+    gff.records = annotations.map do |a|
+      Bio::GFF::GFF3::Record.new(a[:seqname], a[:source], 'CDS',
+                                 a[:start],   a[:end],   nil,
+                                 a[:strand],  a[:phase])
     end
+
+    tmp = Tempfile.new(Time.new).path
+    File.open(tmp,'w'){ |out| out.print gff }
     tmp
   end
 
