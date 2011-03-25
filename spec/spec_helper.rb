@@ -29,7 +29,9 @@ RSpec.configure do |config|
 
   def make_scaffold(entries)
     entries.map do |entry|
-      {'sequence' => {'source' => (entry['name'] || entry[:name]) }}
+      hash = {'source' => (entry['name'] || entry[:name]) }
+      hash['start'] = entry[:start] if entry[:start]
+      { 'sequence' => hash }
     end
   end
 
