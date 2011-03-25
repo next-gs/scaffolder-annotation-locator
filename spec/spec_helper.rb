@@ -40,4 +40,17 @@ RSpec.configure do |config|
     end.flatten
   end
 
+  def generate_gff3_file(annotations)
+    gff = Bio::GFF::GFF3.new
+    gff.records = annotations.map do |a|
+      Bio::GFF::GFF3::Record.new(a[:seqname], a[:source], 'CDS', a[:start],
+       a[:end], nil, a[:strand],  a[:phase])
+    end
+
+    tmp = Tempfile.new(Time.new).path
+    File.open(tmp,'w'){ |out| out.print gff }
+    tmp
+  end
+
+
 end
