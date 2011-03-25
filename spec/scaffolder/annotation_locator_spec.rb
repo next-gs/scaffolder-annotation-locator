@@ -5,9 +5,8 @@ describe Scaffolder::AnnotationLocator do
   def generate_gff3_file(annotations)
     gff = Bio::GFF::GFF3.new
     gff.records = annotations.map do |a|
-      Bio::GFF::GFF3::Record.new(a[:seqname], a[:source], 'CDS',
-                                 a[:start],   a[:end],   nil,
-                                 a[:strand],  a[:phase])
+      Bio::GFF::GFF3::Record.new(a[:seqname], a[:source], 'CDS', a[:start],
+       a[:end], nil, a[:strand],  a[:phase])
     end
 
     tmp = Tempfile.new(Time.new).path
@@ -18,16 +17,13 @@ describe Scaffolder::AnnotationLocator do
   describe "relocating a single annotation on a single contig" do
 
     before do
-      entries = [{:name => 'seq1', :nucleotides => 'ATGC'}]
+      entries = [{:name => 'seq1', :nucleotides => 'ATGC', :start => 4}]
 
       @record = { :seqname => 'contig1',
         :start => 4, :end => 6, :strand => '+',:phase => 1}
       @gff3_file = generate_gff3_file([@record])
-      @scaffold_file = Tempfile.new("scaffold").path
-      @sequence_file = Tempfile.new("sequence").path
-
-      write_scaffold_file(entries,@scaffold_file)
-      write_sequence_file(entries,@sequence_file)
+      @scaffold_file = write_scaffold_file(entries)
+      @sequence_file = write_sequence_file(entries)
     end
 
     subject do
