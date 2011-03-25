@@ -8,7 +8,7 @@ rescue Bundler::BundlerError => e
 end
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
-require 'scaffolder-annotation-locator'
+require 'scaffolder/annotation_locator'
 
 require 'rspec/expectations'
 require 'aruba/cucumber'
