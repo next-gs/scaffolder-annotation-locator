@@ -6,9 +6,9 @@ describe Scaffolder::AnnotationLocator do
   def generate_gff3_file(annotations)
     tmp = Tempfile.new(Time.new).path
     File.open(tmp,'w') do |out|
-      out.puts "#gff-version 3"
+      out.puts "##gff-version 3"
       out.print(annotations.map do |a|
-        [a[:source],'.','CDS',a[:start],a[:stop],'.',a[:phase],"ID=#{a[:id]}"]*'\t'
+        [a[:seqname],'.','CDS',a[:start],a[:end],'.',a[:strand],a[:phase]]*"\t"
       end * '\n')
     end
     tmp
@@ -19,10 +19,9 @@ describe Scaffolder::AnnotationLocator do
     before do
       entries = [{:name => 'seq1', :nucleotides => 'ATGC'}]
 
-
-      annotations = [{ :source => 'contig1',
-        :start => 3, :stop => 4, :phase => '+', :id => 1}]
-      @gff3_file = generate_gff3_file(annotations)
+      @record = { :seqname => 'contig1',
+        :start => 4, :end => 6, :strand => '+',:phase => 1}
+      @gff3_file = generate_gff3_file([@record])
       @scaffold_file = Tempfile.new("scaffold").path
       @sequence_file = Tempfile.new("sequence").path
 
@@ -34,9 +33,26 @@ describe Scaffolder::AnnotationLocator do
       described_class.new(@scaffold_file, @sequence_file, @gff3_file).first
     end
 
-    its(:start){ should == 3 }
+    it "should have scaffold as sequence name" do
+      subject.seqname.should == "scaffold"
+    end
+
+    it "should have same start position" do
+      subject.start.should == @record[:start]
+    end
+
+    it "should have same end position" do
+      subject.end.should == @record[:end]
+    end
+
+    it "should have same strand" do
+      subject.strand.should == @record[:strand]
+    end
+
+    it "should have same phase" do
+      subject.phase.should == @record[:phase]
+    end
 
   end
-
 
 end
