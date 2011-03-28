@@ -52,7 +52,7 @@ Feature: Locating gff3 annotations on a scaffold
       scaffold	.	CDS	1	10	.	+	1	ID=gene1
       """
 
-  Scenario: Two gene annotation on separate scaffolds
+  Scenario: Multiple gene annotations on separate contigs
     Given a file named "scaf.yml" with:
       """
       ---
