@@ -81,16 +81,16 @@ describe Scaffolder::AnnotationLocator do
   describe "relocating two annotations on two contigs" do
 
     before do
-      entries = [{:name => 'c1', :nucleotides => 'AAATTT'},
-                 {:name => 'c2', :nucleotides => 'AAATTT'}]
+      @sequences = [{:name => 'c1', :nucleotides => 'AAATTT'},
+                    {:name => 'c2', :nucleotides => 'AAATTT'}]
 
       one = {:seqname => 'c1', :start => 4, :end => 6, :strand => '+',:phase => 1}
       two = {:seqname => 'c2', :start => 4, :end => 6, :strand => '+',:phase => 1}
       @entries = [one,two]
 
       @gff3_file = generate_gff3_file(@entries)
-      @scaffold_file = write_scaffold_file(entries)
-      @sequence_file = write_sequence_file(entries)
+      @scaffold_file = write_scaffold_file(@sequences)
+      @sequence_file = write_sequence_file(@sequences)
     end
 
     subject do
@@ -118,6 +118,12 @@ describe Scaffolder::AnnotationLocator do
     it "should have the same cooridinates for the first entry" do
       subject.first.start.should == @entries.first[:start]
       subject.first.end.should == @entries.first[:end]
+    end
+
+    it "should update second contig cooridinates by first contig length" do
+      difference = @sequences.first[:nucleotides].length
+      subject.last.start.should == @entries.last[:start] + difference
+      subject.last.end.should   == @entries.last[:end]   + difference
     end
 
   end

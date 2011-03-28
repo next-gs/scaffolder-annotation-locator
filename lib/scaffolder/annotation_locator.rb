@@ -8,13 +8,19 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
     @scaffold_file = scaffold_file
     @sequence_file = sequence_file
 
+    running_length = 0
     super(Bio::GFF::GFF3.new(File.read(gff_file)).records.map! do |record|
 
-      sequence = sequences[record.seqname]
-      if sequence.start > 1
-        record.start -= sequence.start - 1
-        record.end   -= sequence.start - 1
+      scaffold_entry = sequences[record.seqname]
+      if scaffold_entry.start > 1
+        record.start -= scaffold_entry.start - 1
+        record.end   -= scaffold_entry.start - 1
       end
+
+      record.start += running_length
+      record.end   += running_length
+
+      running_length += scaffold_entry.sequence.length
 
       record.seqname = "scaffold"
       record
