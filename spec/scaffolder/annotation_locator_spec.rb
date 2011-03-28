@@ -40,7 +40,7 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
-  describe "relocating a single annotation on a single contig" do
+  describe "relocating a single annotation on a trimmed contig" do
 
     before do
       entries = [{:name => 'contig1', :nucleotides => 'ATGC', :start => 4}]
