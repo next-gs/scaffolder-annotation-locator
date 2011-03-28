@@ -128,6 +128,58 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
+  describe "relocating where the first of two contigs is start trimmed" do
+
+    before do
+      @sequences = [{:name => 'c1', :nucleotides => 'AAATTT', :start => 4},
+                    {:name => 'c2', :nucleotides => 'AAATTT'}]
+
+      one = {:seqname => 'c1', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      two = {:seqname => 'c2', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      @entries = [one,two]
+
+      @gff3_file = generate_gff3_file(@entries)
+      @scaffold_file = write_scaffold_file(@sequences)
+      @sequence_file = write_sequence_file(@sequences)
+    end
+
+    subject do
+      described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+    end
+
+    it "each entry should have the expected sequence name" do
+      subject.each do |annotation|
+        annotation.seqname.should == "scaffold"
+      end
+    end
+
+    it "each entry should have the expected phase" do
+      subject.each_with_index do |annotation,i|
+        annotation.phase.should == @entries[i][:phase]
+      end
+    end
+
+    it "each entry should have the expected strand" do
+      subject.each_with_index do |annotation,i|
+        annotation.strand.should == @entries[i][:strand]
+      end
+    end
+
+    it "should update the coordinates for the first entry" do
+      difference = @sequences.first[:start] - 1
+      subject.first.start.should == @entries.first[:start] - difference
+      subject.first.end.should   == @entries.first[:end]   - difference
+    end
+
+    it "should update second contig cooridinates by first contig length" do
+      difference = @sequences.first[:nucleotides].length -
+                   (@sequences.first[:start] - 1)
+      subject.last.start.should == @entries.last[:start] + difference
+      subject.last.end.should   == @entries.last[:end]   + difference
+    end
+
+  end
+
   describe "the sequences hash" do
 
     before do
