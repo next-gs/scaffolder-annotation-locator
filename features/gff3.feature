@@ -8,7 +8,7 @@ Feature: Locating gff3 annotations on a scaffold
       """
       ---
         - sequence:
-          source: contig1
+            source: contig1
       """
     Given a file named "seq.fna" with:
       """
@@ -32,8 +32,8 @@ Feature: Locating gff3 annotations on a scaffold
       """
       ---
         - sequence:
-          source: contig1
-          start: 4
+            source: contig1
+            start: 4
       """
     Given a file named "seq.fna" with:
       """
