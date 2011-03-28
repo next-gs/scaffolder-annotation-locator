@@ -78,6 +78,45 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
+  describe "relocating two annotations on two contigs" do
+
+    before do
+      entries = [{:name => 'c1', :nucleotides => 'AAATTT'},
+                 {:name => 'c2', :nucleotides => 'AAATTT'}]
+
+      one = {:seqname => 'c1', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      two = {:seqname => 'c2', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      @entries = [one,two]
+
+      @gff3_file = generate_gff3_file(@entries)
+      @scaffold_file = write_scaffold_file(entries)
+      @sequence_file = write_sequence_file(entries)
+    end
+
+    subject do
+      described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+    end
+
+    it "each entry should have the expected sequence name" do
+      subject.each do |annotation|
+        annotation.seqname.should == "scaffold"
+      end
+    end
+
+    it "each entry should have the expected phase" do
+      subject.each_with_index do |annotation,i|
+        annotation.phase.should == @entries[i][:phase]
+      end
+    end
+
+    it "each entry should have the expected strand" do
+      subject.each_with_index do |annotation,i|
+        annotation.strand.should == @entries[i][:strand]
+      end
+    end
+
+  end
+
   describe "the sequences hash" do
 
     before do
