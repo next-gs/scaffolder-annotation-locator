@@ -115,6 +115,11 @@ describe Scaffolder::AnnotationLocator do
       end
     end
 
+    it "should have the same cooridinates for the first entry" do
+      subject.first.start.should == @entries.first[:start]
+      subject.first.end.should == @entries.first[:end]
+    end
+
   end
 
   describe "the sequences hash" do
