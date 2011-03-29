@@ -116,7 +116,7 @@ Feature: Locating gff3 annotations on a scaffold
       ##gff-version 3
       contig1	.	CDS	1	10	.	+	1	ID=gene1
       contig2	.	CDS	4	6	.	+	1	ID=gene2
-      contig3	.	CDS	1	6	.	+	1	ID=gene2
+      contig3	.	CDS	1	6	.	+	1	ID=gene3
       """
     When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
     Then the result should be:
@@ -124,5 +124,5 @@ Feature: Locating gff3 annotations on a scaffold
       ##gff-version 3
       scaffold	.	CDS	1	10	.	+	1	ID=gene1
       scaffold	.	CDS	18	20	.	+	1	ID=gene2
-      scaffold	.	CDS	23	28	.	+	1	ID=gene2
+      scaffold	.	CDS	24	29	.	+	1	ID=gene3
       """
