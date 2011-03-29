@@ -17,28 +17,15 @@ describe Scaffolder::AnnotationLocator do
     end
 
     subject do
-      @annotations.first
+      @annotations
     end
 
-    it "should have scaffold as sequence name" do
-      subject.seqname.should == "scaffold"
-    end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "should have same start position" do
-      subject.start.should == @record[:start]
-    end
-
-    it "should have same end position" do
-      subject.end.should == @record[:end]
-    end
-
-    it "should have same strand" do
-      subject.strand.should == @record[:strand]
-    end
-
-    it "should have same phase" do
-      subject.phase.should == @record[:phase]
-    end
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
   end
 
@@ -57,28 +44,15 @@ describe Scaffolder::AnnotationLocator do
     end
 
     subject do
-      @annotations.first
+      @annotations
     end
 
-    it "should have scaffold as sequence name" do
-      subject.seqname.should == "scaffold"
-    end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "should have same start position" do
-      subject.start.should == 1
-    end
-
-    it "should have same end position" do
-      subject.end.should == 3
-    end
-
-    it "should have same strand" do
-      subject.strand.should == @record[:strand]
-    end
-
-    it "should have same phase" do
-      subject.phase.should == @record[:phase]
-    end
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
   end
 
@@ -102,34 +76,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
-
-    it "should have the same cooridinates for the first entry" do
-      subject.first.start.should == @entries.first[:start]
-      subject.first.end.should == @entries.first[:end]
-    end
-
-    it "should update second contig cooridinates by first contig length" do
-      difference = @sequences.first[:nucleotides].length
-      subject.last.start.should == @entries.last[:start] + difference
-      subject.last.end.should   == @entries.last[:end]   + difference
-    end
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 10).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 12).only_for_the(:second) }
 
   end
 
@@ -153,36 +109,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
-
-    it "should update the coordinates for the first entry" do
-      difference = @sequences.first[:start] - 1
-      subject.first.start.should == @entries.first[:start] - difference
-      subject.first.end.should   == @entries.first[:end]   - difference
-    end
-
-    it "should update second contig cooridinates by first contig length" do
-      difference = @sequences.first[:nucleotides].length -
-                   (@sequences.first[:start] - 1)
-      subject.last.start.should == @entries.last[:start] + difference
-      subject.last.end.should   == @entries.last[:end]   + difference
-    end
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
@@ -207,35 +143,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
-
-    it "should maintain the coordinates for the first entry" do
-      subject.first.start.should == @entries.first[:start]
-      subject.first.end.should   == @entries.first[:end]
-    end
-
-    it "should update second contig cooridinates by first contig length" do
-      difference = @sequences.first[:nucleotides].length -
-                   (@sequences.last[:start] - 1)
-      subject.last.start.should == @entries.last[:start] + difference
-      subject.last.end.should   == @entries.last[:end]   + difference
-    end
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
@@ -259,34 +176,16 @@ describe Scaffolder::AnnotationLocator do
     subject do
       @annotations
     end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
-
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
-
-    it "should return the expect annotation coordinates for the first contig" do
-      subject.first.start.should == 1
-      subject.first.end.should   == 3
-    end
-
-    it "should return the expect annotation coordinates for the second contig" do
-      subject.last.start.should == 7
-      subject.last.end.should   == 9
-    end
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
