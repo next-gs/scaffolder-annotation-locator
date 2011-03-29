@@ -102,14 +102,9 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should name_each_annotation 'scaffold' }
-    it{ should set_the_phase_for_each_annotation_to 1 }
-
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
+    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
+    it{ should set_all_annotation_attributes_for(:phase).to(1) }
+    it{ should set_all_annotation_attributes_for(:strand).to('+') }
 
     it "should have the same cooridinates for the first entry" do
       subject.first.start.should == @entries.first[:start]
@@ -144,14 +139,9 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should name_each_annotation 'scaffold' }
-    it{ should set_the_phase_for_each_annotation_to 1 }
-
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
+    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
+    it{ should set_all_annotation_attributes_for(:phase).to(1) }
+    it{ should set_all_annotation_attributes_for(:strand).to('+') }
 
     it "should update the coordinates for the first entry" do
       difference = @sequences.first[:start] - 1
@@ -189,14 +179,9 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should name_each_annotation 'scaffold' }
-    it{ should set_the_phase_for_each_annotation_to 1 }
-
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
+    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
+    it{ should set_all_annotation_attributes_for(:phase).to(1) }
+    it{ should set_all_annotation_attributes_for(:strand).to('+') }
 
     it "should maintain the coordinates for the first entry" do
       subject.first.start.should == @entries.first[:start]
@@ -233,14 +218,9 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should name_each_annotation 'scaffold' }
-    it{ should set_the_phase_for_each_annotation_to 1 }
-
-    it "each entry should have the expected strand" do
-      subject.each_with_index do |annotation,i|
-        annotation.strand.should == @entries[i][:strand]
-      end
-    end
+    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
+    it{ should set_all_annotation_attributes_for(:phase).to(1) }
+    it{ should set_all_annotation_attributes_for(:strand).to('+') }
 
     it "should return the expect annotation coordinates for the first contig" do
       subject.first.start.should == 1
