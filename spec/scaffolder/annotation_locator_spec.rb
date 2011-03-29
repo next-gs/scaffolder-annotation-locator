@@ -20,12 +20,12 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_the_annotation_attribute(:start).to(4).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(6).for_the(:first) }
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
   end
 
@@ -47,12 +47,12 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_the_annotation_attribute(:start).to(1).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(3).for_the(:first) }
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
   end
 
@@ -76,16 +76,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_the_annotation_attribute(:start).to(4).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(6).for_the(:first) }
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
     # First contig length: 6
-    it{ should set_the_annotation_attribute(:start).to(10).for_the(:second) }
-    it{ should set_the_annotation_attribute(:end).to(12).for_the(:second) }
+    it{ should set_the_attribute(:start   => 10).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 12).only_for_the(:second) }
 
   end
 
@@ -109,16 +109,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_the_annotation_attribute(:start).to(1).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(3).for_the(:first) }
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
-    # First contig length: 3
-    it{ should set_the_annotation_attribute(:start).to(7).for_the(:second) }
-    it{ should set_the_annotation_attribute(:end).to(9).for_the(:second) }
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
@@ -143,16 +143,16 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_the_annotation_attribute(:start).to(4).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(6).for_the(:first) }
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
 
     # First contig length: 6
-    it{ should set_the_annotation_attribute(:start).to(7).for_the(:second) }
-    it{ should set_the_annotation_attribute(:end).to(9).for_the(:second) }
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
@@ -176,16 +176,16 @@ describe Scaffolder::AnnotationLocator do
     subject do
       @annotations
     end
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
 
-    it{ should set_all_annotation_attributes_for(:seqname).to('scaffold') }
-    it{ should set_all_annotation_attributes_for(:phase).to(1) }
-    it{ should set_all_annotation_attributes_for(:strand).to('+') }
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
 
-    it{ should set_the_annotation_attribute(:start).to(1).for_the(:first) }
-    it{ should set_the_annotation_attribute(:end).to(3).for_the(:first) }
-
-    it{ should set_the_annotation_attribute(:start).to(7).for_the(:second) }
-    it{ should set_the_annotation_attribute(:end).to(9).for_the(:second) }
+    # First contig length: 6
+    it{ should set_the_attribute(:start   => 7).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 9).only_for_the(:second) }
 
   end
 
