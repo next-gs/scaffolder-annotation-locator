@@ -31,6 +31,7 @@ RSpec.configure do |config|
     entries.map do |entry|
       hash = {'source' => (entry['name'] || entry[:name]) }
       hash['start'] = entry[:start] if entry[:start]
+      hash['stop'] = entry[:stop] if entry[:stop]
       { 'sequence' => hash }
     end
   end
@@ -49,10 +50,9 @@ RSpec.configure do |config|
        a[:end], nil, a[:strand],  a[:phase])
     end
 
-    tmp = Tempfile.new(Time.new).path
-    File.open(tmp,'w'){ |out| out.print gff }
+    tmp = Tempfile.new("gff").path
+    File.open(tmp,'w'){ |out| out.print(gff) }
     tmp
   end
-
 
 end
