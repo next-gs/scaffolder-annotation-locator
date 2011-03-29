@@ -103,12 +103,7 @@ describe Scaffolder::AnnotationLocator do
     end
 
     it{ should name_each_annotation 'scaffold' }
-
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_phase_for_each_annotation_to 1 }
 
     it "each entry should have the expected strand" do
       subject.each_with_index do |annotation,i|
@@ -150,12 +145,7 @@ describe Scaffolder::AnnotationLocator do
     end
 
     it{ should name_each_annotation 'scaffold' }
-
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_phase_for_each_annotation_to 1 }
 
     it "each entry should have the expected strand" do
       subject.each_with_index do |annotation,i|
@@ -200,12 +190,7 @@ describe Scaffolder::AnnotationLocator do
     end
 
     it{ should name_each_annotation 'scaffold' }
-
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_phase_for_each_annotation_to 1 }
 
     it "each entry should have the expected strand" do
       subject.each_with_index do |annotation,i|
@@ -249,12 +234,7 @@ describe Scaffolder::AnnotationLocator do
     end
 
     it{ should name_each_annotation 'scaffold' }
-
-    it "each entry should have the expected phase" do
-      subject.each_with_index do |annotation,i|
-        annotation.phase.should == @entries[i][:phase]
-      end
-    end
+    it{ should set_the_phase_for_each_annotation_to 1 }
 
     it "each entry should have the expected strand" do
       subject.each_with_index do |annotation,i|
