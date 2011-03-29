@@ -102,11 +102,7 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should name_each_annotation 'scaffold' }
 
     it "each entry should have the expected phase" do
       subject.each_with_index do |annotation,i|
@@ -153,11 +149,7 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should name_each_annotation 'scaffold' }
 
     it "each entry should have the expected phase" do
       subject.each_with_index do |annotation,i|
@@ -207,11 +199,7 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should name_each_annotation 'scaffold' }
 
     it "each entry should have the expected phase" do
       subject.each_with_index do |annotation,i|
@@ -260,11 +248,7 @@ describe Scaffolder::AnnotationLocator do
       @annotations
     end
 
-    it "each entry should have the expected sequence name" do
-      subject.each do |annotation|
-        annotation.seqname.should == "scaffold"
-      end
-    end
+    it{ should name_each_annotation 'scaffold' }
 
     it "each entry should have the expected phase" do
       subject.each_with_index do |annotation,i|
