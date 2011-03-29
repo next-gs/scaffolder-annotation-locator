@@ -31,6 +31,7 @@ RSpec.configure do |config|
     entries.map do |entry|
       hash = {'source' => (entry['name'] || entry[:name]) }
       hash['start'] = entry[:start] if entry[:start]
+      hash['stop'] = entry[:stop] if entry[:stop]
       { 'sequence' => hash }
     end
   end

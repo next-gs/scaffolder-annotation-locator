@@ -239,6 +239,57 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
+  describe "relocating where the first of two contigs is stop trimmed" do
+
+    before(:all) do
+      @sequences = [{:name => 'c1', :nucleotides => 'AAATTT', :stop => 3},
+                    {:name => 'c2', :nucleotides => 'AAATTT'}]
+
+      one = {:seqname => 'c1', :start => 1, :end => 3, :strand => '+',:phase => 1}
+      two = {:seqname => 'c2', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      @entries = [one,two]
+
+      @gff3_file = generate_gff3_file(@entries)
+      @scaffold_file = write_scaffold_file(@sequences)
+      @sequence_file = write_sequence_file(@sequences)
+
+      @annotations = described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+    end
+
+    subject do
+      @annotations
+    end
+
+    it "each entry should have the expected sequence name" do
+      subject.each do |annotation|
+        annotation.seqname.should == "scaffold"
+      end
+    end
+
+    it "each entry should have the expected phase" do
+      subject.each_with_index do |annotation,i|
+        annotation.phase.should == @entries[i][:phase]
+      end
+    end
+
+    it "each entry should have the expected strand" do
+      subject.each_with_index do |annotation,i|
+        annotation.strand.should == @entries[i][:strand]
+      end
+    end
+
+    it "should return the expect annotation coordinates for the first contig" do
+      subject.first.start.should == 1
+      subject.first.end.should   == 3
+    end
+
+    it "should return the expect annotation coordinates for the second contig" do
+      subject.last.start.should == 7
+      subject.last.end.should   == 9
+    end
+
+  end
+
   describe "the sequences hash" do
 
     before(:all) do
