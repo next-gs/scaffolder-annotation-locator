@@ -30,8 +30,9 @@ RSpec.configure do |config|
   def make_scaffold(entries)
     entries.map do |entry|
       hash = {'source' => (entry['name'] || entry[:name]) }
-      hash['start'] = entry[:start] if entry[:start]
-      hash['stop'] = entry[:stop] if entry[:stop]
+      hash['start']   = entry[:start] if entry[:start]
+      hash['stop']    = entry[:stop] if entry[:stop]
+      hash['reverse'] = entry[:reverse] if entry[:reverse]
       { 'sequence' => hash }
     end
   end
