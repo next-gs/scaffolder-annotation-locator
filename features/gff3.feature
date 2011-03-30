@@ -151,3 +151,45 @@ Feature: Locating gff3 annotations on a scaffold
       scaffold	.	CDS	18	20	.	+	1	ID=gene2
       scaffold	.	CDS	24	29	.	+	1	ID=gene3
       """
+
+  Scenario: Multiple gene annotations on reverse and trimmed contigs
+    Given a file named "scaf.yml" with:
+      """
+      ---
+        - sequence:
+            source: contig1
+            stop: 17
+        - sequence:
+            source: contig2
+            start: 4
+            stop: 9
+            reverse: true
+        - sequence:
+            source: contig3
+            reverse: true
+      """
+    Given a file named "seq.fna" with:
+      """
+      > contig1
+      AAAAAGGGGGCCCCCTTTTT
+      > contig2
+      AAAAAGGGGGCCCCCTTTTT
+      > contig3
+      AAAAAGGGGGCCCCCTTTTT
+      """
+    Given a file named "anno.gff" with:
+      """
+      ##gff-version 3
+      contig1	.	CDS	1	10	.	+	1	ID=gene1
+      contig2	.	CDS	4	6	.	+	1	ID=gene2
+      contig3	.	CDS	1	6	.	+	1	ID=gene3
+      """
+    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
+    Then the result should be:
+      """
+      ##gff-version 3
+      scaffold	.	CDS	1	10	.	+	1	ID=gene1
+      scaffold	.	CDS	21	23	.	-	1	ID=gene2
+      scaffold	.	CDS	38	43	.	-	1	ID=gene3
+      """
+
