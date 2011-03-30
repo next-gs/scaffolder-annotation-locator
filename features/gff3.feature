@@ -74,7 +74,7 @@ Feature: Locating gff3 annotations on a scaffold
     Then the result should be:
       """
       ##gff-version 3
-      scaffold	.	CDS	14	20	.	-	1	ID=gene1
+      scaffold	.	CDS	15	20	.	-	1	ID=gene1
       """
 
   Scenario: Multiple gene annotations on separate contigs
