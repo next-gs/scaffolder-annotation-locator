@@ -56,6 +56,33 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
+  describe "relocating a reverse strand annotation on a single reversed contig" do
+
+    before(:all) do
+      entries = [{:name => 'contig1', :nucleotides => 'ATGCCC', :reverse => true}]
+
+      @record = { :seqname => 'contig1',
+        :start => 4, :end => 6, :strand => '-',:phase => 1}
+      @gff3_file = generate_gff3_file([@record])
+      @scaffold_file = write_scaffold_file(entries)
+      @sequence_file = write_sequence_file(entries)
+
+      @annotations = described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+    end
+
+    subject do
+      @annotations
+    end
+
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
+
+    it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
+
+  end
+
   describe "relocating a single annotation on a trimmed contig" do
 
     before(:all) do
@@ -236,4 +263,15 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
+  describe "the flip strand method" do
+
+    it "should return '+' when passed '-'" do
+      described_class.flip_strand('+').should == '-'
+    end
+
+    it "should return '-' when passed '+'" do
+      described_class.flip_strand('-').should == '+'
+    end
+
+  end
 end
