@@ -14,7 +14,8 @@ RSpec.configure do |config|
 
   def write_sequence_file(entries,file = Tempfile.new("sequence").path)
     File.open(file,'w') do |tmp|
-      make_sequence(entries).each do |entry|
+      sequence_entries = entries.reject{|a| a[:unresolved]}
+      make_sequence(sequence_entries).each do |entry|
         seq = Bio::Sequence.new(entry[:sequence])
         tmp.print(seq.output(:fasta,:header => entry[:name]))
       end
@@ -29,11 +30,17 @@ RSpec.configure do |config|
 
   def make_scaffold(entries)
     entries.map do |entry|
-      hash = {'source' => (entry['name'] || entry[:name]) }
-      hash['start']   = entry[:start] if entry[:start]
-      hash['stop']    = entry[:stop] if entry[:stop]
-      hash['reverse'] = entry[:reverse] if entry[:reverse]
-      { 'sequence' => hash }
+      if entry[:nucleotides]
+        hash = {'source' => (entry['name'] || entry[:name]) }
+        hash['start']   = entry[:start] if entry[:start]
+        hash['stop']    = entry[:stop] if entry[:stop]
+        hash['reverse'] = entry[:reverse] if entry[:reverse]
+        { 'sequence' => hash }
+      elsif entry[:unresolved]
+        { 'unresolved' => {'length' => entry[:unresolved] }}
+      else
+        raise ArgumentError.new("Unknown entry: #{entry.inspect}")
+      end
     end
   end
 

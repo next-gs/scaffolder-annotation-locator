@@ -279,13 +279,15 @@ describe Scaffolder::AnnotationLocator do
       @gff3_file = generate_gff3_file(@entries)
       @scaffold_file = write_scaffold_file(@sequences)
       @sequence_file = write_sequence_file(@sequences)
-
       @annotations = described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+
     end
 
     subject do
       @annotations
     end
+
+    its(:length){ should == 2 }
     it{ should set_the_attribute(:seqname => 'scaffold') }
     it{ should set_the_attribute(:phase   => 1) }
     it{ should set_the_attribute(:strand  => '+') }
@@ -299,22 +301,64 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
-  describe "the sequences hash" do
+  describe "relocating two annotations on two contigs with an unresolved region" do
 
     before(:all) do
-      @name = 'something'
-      entries = [{:name => @name, :nucleotides => 'ATGC'}]
-      @gff3_file = generate_gff3_file([])
-      @scaffold_file = write_scaffold_file(entries)
-      @sequence_file = write_sequence_file(entries)
+      @sequences = [{:name       => 'c1', :nucleotides => 'AAATTT'},
+                    {:unresolved => 10},
+                    {:name       => 'c2', :nucleotides => 'AAATTT'}]
+
+      one = {:seqname => 'c1', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      two = {:seqname => 'c2', :start => 1, :end => 3, :strand => '+',:phase => 1}
+      @entries = [one,two]
+
+      @gff3_file = generate_gff3_file(@entries)
+      @scaffold_file = write_scaffold_file(@sequences)
+      @sequence_file = write_sequence_file(@sequences)
+      @annotations = described_class.new(@scaffold_file, @sequence_file, @gff3_file)
+
     end
 
     subject do
-      described_class.new(@scaffold_file,@sequence_file,@gff3_file)
+      @annotations
     end
 
-    it "should contain the expected sequence as a hash key" do
-      subject.sequences.keys.should == [@name]
+    it{ should set_the_attribute(:seqname => 'scaffold') }
+    it{ should set_the_attribute(:phase   => 1) }
+    it{ should set_the_attribute(:strand  => '+') }
+
+    it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+    it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
+
+    # First contig length: 6
+    # Unresolved region length: 10
+    it{ should set_the_attribute(:start   => 17).only_for_the(:second) }
+    it{ should set_the_attribute(:end     => 19).only_for_the(:second) }
+
+  end
+
+  describe "records method" do
+
+    before(:all) do
+      @sequences = [{:name       => 'c1', :nucleotides => 'AAATTT'},
+                    {:name       => 'c2', :nucleotides => 'AAATTT'}]
+
+      one = {:seqname => 'c1', :start => 4, :end => 6, :strand => '+',:phase => 1}
+      two = {:seqname => 'c2', :start => 1, :end => 3, :strand => '+',:phase => 1}
+      @entries = [one,two]
+
+      @gff3_file = generate_gff3_file(@entries)
+      @scaffold_file = write_scaffold_file(@sequences)
+      @sequence_file = write_sequence_file(@sequences)
+    end
+
+    subject do
+      described_class.new(@scaffold_file,@sequence_file,@gff3_file).records
+    end
+
+    it "should return the gff records grouped by sequence" do
+      subject['c1'].length.should == 1
+      subject['c2'].length.should == 1
     end
 
   end
