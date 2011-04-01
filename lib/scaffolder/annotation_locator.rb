@@ -7,33 +7,26 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
   def initialize(scaffold_file,sequence_file,gff_file)
     @scaffold_file = scaffold_file
     @sequence_file = sequence_file
-
-    gff3 = Bio::GFF::GFF3.new(File.read(gff_file)).records
-    records_by_sequence = gff3.inject(Hash.new(Array.new)) do |hash,record|
-      hash[record.seqname] << record
-      hash
-    end
+    @gff_file      = gff_file
 
     updated_records = Array.new
-    scaffold.inject(0) do |running_length,entry|
+    scaffold.inject(0) do |length,entry|
 
       if entry.entry_type == :sequence
-        records_by_sequence[entry.source].each do |record|
-          updated_records << update_record(record,entry,running_length)
+        updated_records << records[entry.source].map do |record|
+          update_record(record,entry,length)
         end
       end
 
-      running_length + entry.sequence.length
+      length + entry.sequence.length
     end
 
-    super updated_records
+    super updated_records.flatten
   end
 
   def update_record(record,scaffold_entry,prior_length)
-    if scaffold_entry.start > 1
-      record.start -= scaffold_entry.start - 1
-      record.end   -= scaffold_entry.start - 1
-    end
+    record.start -= scaffold_entry.start - 1
+    record.end   -= scaffold_entry.start - 1
 
     if scaffold_entry.reverse
       record.end   = scaffold_entry.sequence.length - (record.end - 1)
@@ -54,9 +47,10 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
     Scaffolder.new(YAML.load(File.read(@scaffold_file)),@sequence_file)
   end
 
-  def sequences
-    scaffold.inject(Hash.new) do |hash,entry|
-      hash[entry.source] = entry if entry.entry_type == :sequence
+  def records
+    gff3 = Bio::GFF::GFF3.new(File.read(@gff_file)).records
+    gff3.inject(Hash.new{|h,k| h[k] = Array.new }) do |hash,record|
+      hash[record.seqname] << record
       hash
     end
   end
