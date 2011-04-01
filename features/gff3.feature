@@ -288,3 +288,30 @@ Feature: Locating gff3 annotations on a scaffold
       scaffold	.	CDS	1	6	.	+	1	ID=gene1
       scaffold	.	CDS	31	36	.	+	1	ID=gene2
       """
+
+  Scenario: Annotations on a single duplicated contig
+    Given a file named "scaf.yml" with:
+      """
+      ---
+        - sequence:
+            source: contig1
+        - sequence:
+            source: contig1
+      """
+    Given a file named "seq.fna" with:
+      """
+      > contig1
+      AAAAAGGGGGCCCCCTTTTT
+      """
+    Given a file named "anno.gff" with:
+      """
+      ##gff-version 3
+      contig1	.	CDS	1	6	.	+	1	ID=gene1
+      """
+    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
+    Then the result should be:
+      """
+      ##gff-version 3
+      scaffold	.	CDS	1	6	.	+	1	ID=gene1
+      scaffold	.	CDS	21	26	.	+	1	ID=gene1
+      """
