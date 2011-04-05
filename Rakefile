@@ -13,10 +13,10 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "scaffolder-annotation-locator"
-  gem.homepage = "http://github.com/michaelbarton/scaffolder-annotation-locator"
+  gem.homepage = "http://next.gs"
   gem.license = "MIT"
-  gem.summary = %Q{Scaffolder plugin for gene annotations}
-  gem.description = %Q{Locates contig annotations onto the final scaffold sequence}
+  gem.summary = %Q{Update locations of gff3 annotations from a scaffolder template}
+  gem.description = %Q{Build a genome scaffold using scaffolder and a set of annotated contigs. This tool updates the locations of the contig annotations using the scaffolder tempalte as a base.}
   gem.email = "mail@michaelbarton.me.uk"
   gem.authors = ["Michael Barton"]
 end
