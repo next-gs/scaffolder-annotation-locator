@@ -3,8 +3,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 describe Scaffolder::AnnotationLocator do
 
   def relocate(scaffold,records)
-    scaffold_file, sequence_file = generate_scaffold_files(scaffold)
-    described_class.new(scaffold_file, sequence_file, generate_gff3_file(records))
+    @scaffold_file, @sequence_file = generate_scaffold_files(scaffold)
+    described_class.new(@scaffold_file.path, @sequence_file.path,
+                        generate_gff3_file(records))
   end
 
   before do
@@ -12,7 +13,6 @@ describe Scaffolder::AnnotationLocator do
     @record = {:seqname => 'c1',
       :start => 4, :end => 6, :strand => '+',:phase => 1}
   end
-  after{ @contig, @record = nil }
 
   describe "relocating a single contig" do
 
