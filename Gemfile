@@ -9,7 +9,7 @@ group :development do
   gem "jeweler",  "~> 1.5"
 
   gem "rspec",                   "~> 2.4"
-  gem "scaffolder-test-helpers", "~> 0.2"
+  gem "scaffolder-test-helpers",    "0.2.1"
   gem "cucumber",                "~> 0.9"
   gem "aruba",                   "~> 0.2"
 
