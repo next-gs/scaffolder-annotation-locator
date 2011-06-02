@@ -88,6 +88,24 @@ describe Scaffolder::AnnotationLocator do
       it{ should set_the_attribute(:end     => 7).only_for_the(:first) }
 
     end
+
+    describe "with an insert after an annotation" do
+
+      subject do
+        relocate([@contig.clone.
+                 inserts(:open => 7, :close => 8, :sequence => 'TTT').
+                 sequence('ATGTTTCCC')],
+                 [@record])
+      end
+
+      it{ should set_the_attribute(:seqname => 'scaffold') }
+      it{ should set_the_attribute(:phase   => 1) }
+      it{ should set_the_attribute(:strand  => '+') }
+
+      it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+      it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
+
+    end
   end
 
   describe "relocating two contigs" do
