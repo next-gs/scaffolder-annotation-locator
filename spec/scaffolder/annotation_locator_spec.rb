@@ -76,7 +76,7 @@ describe Scaffolder::AnnotationLocator do
     describe "with an insert before an annotation" do
 
       subject do
-        relocate([@contig.clone.insert(:open => 1, :close => 2, :sequence => 'TTT')],
+        relocate([@contig.clone.inserts(:open => 1, :close => 2, :sequence => 'TTT')],
                  [@record])
       end
 
