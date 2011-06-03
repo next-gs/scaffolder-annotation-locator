@@ -28,12 +28,9 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
 
   def update_record(record,scaffold_entry,prior_length)
 
+    # Update record location by size differences of prior inserts
     scaffold_entry.inserts.select {|i| i.close < record.start }.each do |insert|
-      location_size = (insert.close - insert.open) + 1
-      insert_size = insert.sequence.length
-
-      diff =  insert_size - location_size
-      record.change_position_by diff
+      record.change_position_by insert.size_diff
     end
 
     # Decrease record position by distance contig is trimmed at start
