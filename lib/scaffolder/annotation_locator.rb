@@ -2,6 +2,8 @@ require 'delegate'
 require 'scaffolder'
 require 'bio'
 
+require 'scaffolder/extensions'
+
 class Scaffolder::AnnotationLocator < DelegateClass(Array)
 
   def initialize(scaffold_file,sequence_file,gff_file)
@@ -10,47 +12,35 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
     @gff_file      = gff_file
 
     updated_records = Array.new
-    scaffold.inject(0) do |length,entry|
+    scaffold.inject(0) do |prior_length,entry|
 
       if entry.entry_type == :sequence
-        updated_records << records[entry.source].map do |record|
-          update_record(record,entry,length)
+        records[entry.source].each do |record|
+
+          # Update record location by size differences of prior inserts
+          entry.inserts.select {|i| i.close < record.start }.each do |insert|
+            record.change_position_by insert.size_diff
+          end
+
+          # Decrease record position by distance contig is trimmed at start
+          record.change_position_by(1 - entry.start)
+
+          # Reverse complement record positions if contig is reversed
+          record.reverse_complement_by entry.sequence.length if entry.reverse
+
+          # Increase record position by length of prior contigs
+          record.change_position_by prior_length
+
+          record.seqname = "scaffold"
+
+          updated_records << record
         end
       end
 
-      length + entry.sequence.length
+      prior_length + entry.sequence.length
     end
 
-    super updated_records.flatten
-  end
-
-  def update_record(record,scaffold_entry,prior_length)
-
-    scaffold_entry.inserts.select {|i| i.close < record.start }.each do |insert|
-      location_size = (insert.close - insert.open) + 1
-      insert_size = insert.sequence.length
-
-      diff =  insert_size - location_size
-      record.start += diff
-      record.end   += diff
-    end
-
-    record.start -= scaffold_entry.start - 1
-    record.end   -= scaffold_entry.start - 1
-
-    if scaffold_entry.reverse
-      record.end   = scaffold_entry.sequence.length - (record.end - 1)
-      record.start = scaffold_entry.sequence.length - (record.start - 1)
-
-      record.end, record.start = record.start, record.end
-      record.strand = self.class.flip_strand(record.strand)
-    end
-
-    record.start += prior_length
-    record.end   += prior_length
-
-    record.seqname = "scaffold"
-    record
+    super updated_records
   end
 
   def scaffold
@@ -63,10 +53,6 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       hash[record.seqname] << record
       hash
     end
-  end
-
-  def self.flip_strand(strand)
-    strand == '+' ? '-' : '+'
   end
 
 end

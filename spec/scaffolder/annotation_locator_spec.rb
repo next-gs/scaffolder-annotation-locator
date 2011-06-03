@@ -288,16 +288,4 @@ describe Scaffolder::AnnotationLocator do
 
   end
 
-  describe "#flip_strand" do
-
-    it "should return '+' when passed '-'" do
-      described_class.flip_strand('+').should == '-'
-    end
-
-    it "should return '-' when passed '+'" do
-      described_class.flip_strand('-').should == '+'
-    end
-
-  end
-
 end
