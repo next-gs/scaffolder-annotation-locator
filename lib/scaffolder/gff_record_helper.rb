@@ -1,0 +1,2 @@
+module Scaffolder::GffRecordHelper
+end

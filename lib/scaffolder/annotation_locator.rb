@@ -2,6 +2,8 @@ require 'delegate'
 require 'scaffolder'
 require 'bio'
 
+require 'scaffolder/extensions'
+
 class Scaffolder::AnnotationLocator < DelegateClass(Array)
 
   def initialize(scaffold_file,sequence_file,gff_file)
