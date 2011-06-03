@@ -15,7 +15,7 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
     scaffold.inject(0) do |prior_length,entry|
 
       if entry.entry_type == :sequence
-        updated_records << records[entry.source].map do |record|
+        records[entry.source].each do |record|
 
           # Update record location by size differences of prior inserts
           entry.inserts.select {|i| i.close < record.start }.each do |insert|
@@ -26,24 +26,22 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
           record.change_position_by(1 - entry.start)
 
           # Reverse complement record positions if contig is reversed
-          if entry.reverse
-             record.reverse_complement_by entry.sequence.length
-          end
+          record.reverse_complement_by entry.sequence.length if entry.reverse
 
           # Increase record position by length of prior contigs
           record.change_position_by prior_length
 
           record.seqname = "scaffold"
-          record
+
+          updated_records << record
         end
       end
 
       prior_length + entry.sequence.length
     end
 
-    super updated_records.flatten
+    super updated_records
   end
-
 
   def scaffold
     Scaffolder.new(YAML.load(File.read(@scaffold_file)),@sequence_file)
