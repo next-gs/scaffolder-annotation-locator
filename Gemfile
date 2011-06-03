@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 group :default do
-  gem "scaffolder", "~> 0.4"
+  gem "scaffolder", "0.4.2"
 end
 
 group :development do
