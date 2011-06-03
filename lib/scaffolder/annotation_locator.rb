@@ -33,12 +33,10 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       insert_size = insert.sequence.length
 
       diff =  insert_size - location_size
-      record.start += diff
-      record.end   += diff
+      record.change_position_by diff
     end
 
-    record.start -= scaffold_entry.start - 1
-    record.end   -= scaffold_entry.start - 1
+    record.change_position_by(1 - scaffold_entry.start)
 
     if scaffold_entry.reverse
       record.end   = scaffold_entry.sequence.length - (record.end - 1)
@@ -48,8 +46,7 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       record.flip_strand
     end
 
-    record.start += prior_length
-    record.end   += prior_length
+    record.change_position_by prior_length
 
     record.seqname = "scaffold"
     record
