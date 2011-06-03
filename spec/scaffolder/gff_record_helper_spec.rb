@@ -41,4 +41,24 @@ describe Scaffolder::GffRecordHelper do
 
   end
 
+  describe "#reverse_complement_by" do
+
+    before do
+      subject.reverse_complement_by 7
+    end
+
+    it "should increase start position" do
+      subject.start.should == 5
+    end
+
+    it "should increase end position" do
+      subject.end.should == 7
+    end
+
+    it "should flip the stand" do
+      subject.strand.should == '-'
+    end
+
+  end
+
 end

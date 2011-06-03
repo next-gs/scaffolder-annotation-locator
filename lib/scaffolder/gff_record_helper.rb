@@ -9,4 +9,12 @@ module Scaffolder::GffRecordHelper
     self.end += distance
   end
 
+  def reverse_complement_by(distance)
+    self.end   = distance - (self.end - 1)
+    self.start = distance - (self.start - 1)
+
+    self.end, self.start = self.start, self.end
+    self.flip_strand
+  end
+
 end

@@ -36,16 +36,15 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       record.change_position_by diff
     end
 
+    # Decrease record position by distance contig is trimmed at start
     record.change_position_by(1 - scaffold_entry.start)
 
+    # Reverse complement record positions if contig is reversed
     if scaffold_entry.reverse
-      record.end   = scaffold_entry.sequence.length - (record.end - 1)
-      record.start = scaffold_entry.sequence.length - (record.start - 1)
-
-      record.end, record.start = record.start, record.end
-      record.flip_strand
+       record.reverse_complement_by scaffold_entry.sequence.length
     end
 
+    # Increase record position by length of prior contigs
     record.change_position_by prior_length
 
     record.seqname = "scaffold"
