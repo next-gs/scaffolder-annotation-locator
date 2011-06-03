@@ -5,7 +5,7 @@ describe Scaffolder::AnnotationLocator do
   def relocate(scaffold,records)
     @scaffold_file, @sequence_file = generate_scaffold_files(scaffold)
     described_class.new(@scaffold_file.path, @sequence_file.path,
-                        generate_gff3_file(records))
+                        generate_gff3_file(records).path)
   end
 
   before do
