@@ -144,6 +144,20 @@ describe Scaffolder::AnnotationLocator do
 
     end
 
+    describe "with an insert overlapping with an annotation" do
+
+      subject do
+        relocate([@contig.clone.
+                   inserts(:open => 3, :close => 5, :sequence => 'TTT')],
+                 [@record])
+      end
+
+      it "should not include this annotation" do
+        subject.should be_empty
+      end
+
+    end
+
   end
 
   describe "relocating two contigs" do
