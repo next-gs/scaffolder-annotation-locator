@@ -12,41 +12,38 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
     @gff_file      = gff_file
 
     updated_records = Array.new
-    scaffold.inject(0) do |length,entry|
+    scaffold.inject(0) do |prior_length,entry|
 
       if entry.entry_type == :sequence
         updated_records << records[entry.source].map do |record|
-          update_record(record,entry,length)
+
+          # Update record location by size differences of prior inserts
+          entry.inserts.select {|i| i.close < record.start }.each do |insert|
+            record.change_position_by insert.size_diff
+          end
+
+          # Decrease record position by distance contig is trimmed at start
+          record.change_position_by(1 - entry.start)
+
+          # Reverse complement record positions if contig is reversed
+          if entry.reverse
+             record.reverse_complement_by entry.sequence.length
+          end
+
+          # Increase record position by length of prior contigs
+          record.change_position_by prior_length
+
+          record.seqname = "scaffold"
+          record
         end
       end
 
-      length + entry.sequence.length
+      prior_length + entry.sequence.length
     end
 
     super updated_records.flatten
   end
 
-  def update_record(record,scaffold_entry,prior_length)
-
-    # Update record location by size differences of prior inserts
-    scaffold_entry.inserts.select {|i| i.close < record.start }.each do |insert|
-      record.change_position_by insert.size_diff
-    end
-
-    # Decrease record position by distance contig is trimmed at start
-    record.change_position_by(1 - scaffold_entry.start)
-
-    # Reverse complement record positions if contig is reversed
-    if scaffold_entry.reverse
-       record.reverse_complement_by scaffold_entry.sequence.length
-    end
-
-    # Increase record position by length of prior contigs
-    record.change_position_by prior_length
-
-    record.seqname = "scaffold"
-    record
-  end
 
   def scaffold
     Scaffolder.new(YAML.load(File.read(@scaffold_file)),@sequence_file)
