@@ -45,7 +45,7 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       record.start = scaffold_entry.sequence.length - (record.start - 1)
 
       record.end, record.start = record.start, record.end
-      record.strand = self.class.flip_strand(record.strand)
+      record.flip_strand
     end
 
     record.start += prior_length
@@ -65,10 +65,6 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       hash[record.seqname] << record
       hash
     end
-  end
-
-  def self.flip_strand(strand)
-    strand == '+' ? '-' : '+'
   end
 
 end

@@ -6,4 +6,20 @@ describe Scaffolder::GffRecordHelper do
     Bio::GFF::GFF3::Record.ancestors.should include(described_class)
   end
 
+  describe "#flip_strand" do
+
+    it "should change strand to '-' when flipped from '+'" do
+      record = Bio::GFF::GFF3::Record.new(nil,nil,'CDS',1,3,nil,'+')
+      record.flip_strand
+      record.strand.should == '-'
+    end
+
+    it "should change strand to '+' when flipped from '-'" do
+      record = Bio::GFF::GFF3::Record.new(nil,nil,'CDS',1,3,nil,'-')
+      record.flip_strand
+      record.strand.should == '+'
+    end
+
+  end
+
 end
