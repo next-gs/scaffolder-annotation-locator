@@ -27,31 +27,6 @@ Feature: Locating annotations on single contig scaffold
       scaffold	.	CDS	4	13	.	+	1	ID=gene1
       """
 
-  Scenario: One annotation on a trimmed contig
-    Given a file named "scaf.yml" with:
-      """
-      ---
-        - sequence:
-            source: contig1
-            start: 4
-      """
-    Given a file named "seq.fna" with:
-      """
-      > contig1
-      AAAAAGGGGGCCCCCTTTTT
-      """
-    Given a file named "anno.gff" with:
-      """
-      ##gff-version 3
-      contig1	.	CDS	4	13	.	+	1	ID=gene1
-      """
-    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
-    Then the result should be:
-      """
-      ##gff-version 3
-      scaffold	.	CDS	1	10	.	+	1	ID=gene1
-      """
-
   Scenario: One annotation on a reversed contig
     Given a file named "scaf.yml" with:
       """
@@ -103,7 +78,7 @@ Feature: Locating annotations on single contig scaffold
       ##gff-version 3
       """
 
-  Scenario: An annotation in a stop trimmed region of the sequence
+  Scenario: An annotation inside a stop trimmed region of the sequence
     Given a file named "scaf.yml" with:
       """
       ---
@@ -128,3 +103,56 @@ Feature: Locating annotations on single contig scaffold
       """
       ##gff-version 3
       """
+
+  Scenario: An annotation bordering a stop trimmed region of the sequence
+    Given a file named "scaf.yml" with:
+      """
+      ---
+        - sequence:
+            source: contig1
+            stop: 13
+      """
+    Given a file named "seq.fna" with:
+      """
+      > contig1
+      AAAAAGGGGGCCCCCTTTTT
+      > insert1
+      TTTT
+      """
+    Given a file named "anno.gff" with:
+      """
+      ##gff-version 3
+      contig1	.	CDS	4	13	.	+	1	ID=gene1
+      """
+    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
+    Then the result should be:
+      """
+      ##gff-version 3
+      scaffold	.	CDS	4	13	.	+	1	ID=gene1
+      """
+
+  Scenario: An annotation bordering a start trimmed region of the sequence
+    Given a file named "scaf.yml" with:
+      """
+      ---
+        - sequence:
+            source: contig1
+            start: 4
+      """
+    Given a file named "seq.fna" with:
+      """
+      > contig1
+      AAAAAGGGGGCCCCCTTTTT
+      """
+    Given a file named "anno.gff" with:
+      """
+      ##gff-version 3
+      contig1	.	CDS	4	13	.	+	1	ID=gene1
+      """
+    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
+    Then the result should be:
+      """
+      ##gff-version 3
+      scaffold	.	CDS	1	10	.	+	1	ID=gene1
+      """
+
