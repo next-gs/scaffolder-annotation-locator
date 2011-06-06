@@ -17,6 +17,9 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
       if entry.entry_type == :sequence
         records[entry.source].each do |record|
 
+          # Don't include this record if it overlaps with an insert
+          next if record.overlap?(entry.inserts.map{|i| (i.open..i.close)})
+
           # Update record location by size differences of prior inserts
           entry.inserts.select {|i| i.close < record.start }.each do |insert|
             record.change_position_by insert.size_diff
