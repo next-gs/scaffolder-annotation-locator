@@ -17,4 +17,10 @@ module Scaffolder::GffRecordHelper
     self.flip_strand
   end
 
+  def overlap?(*ranges)
+    ranges.flatten.any? do |range|
+      range.include?(self.start) || range.include?(self.end)
+    end
+  end
+
 end

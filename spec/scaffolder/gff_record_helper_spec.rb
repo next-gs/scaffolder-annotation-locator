@@ -61,4 +61,26 @@ describe Scaffolder::GffRecordHelper do
 
   end
 
+  describe "#overlap?" do
+
+    it "should return false when no overlap with a single insert" do
+      subject.overlap?(4..6).should be_false
+    end
+
+    it "should return true when overlapping with a single insert" do
+      subject.overlap?(0..1).should be_true
+      subject.overlap?(3..4).should be_true
+      subject.overlap?(2..4).should be_true
+    end
+
+    it "should return false when no overlap with a multiple inserts" do
+      subject.overlap?([4..6,7..9]).should be_false
+    end
+
+    it "should return true when overlapping with one of two inserts" do
+      subject.overlap?([0..1,4..6]).should be_true
+    end
+
+  end
+
 end
