@@ -102,3 +102,29 @@ Feature: Locating annotations on single contig scaffold
       """
       ##gff-version 3
       """
+
+  Scenario: An annotation in a stop trimmed region of the sequence
+    Given a file named "scaf.yml" with:
+      """
+      ---
+        - sequence:
+            source: contig1
+            stop: 12
+      """
+    Given a file named "seq.fna" with:
+      """
+      > contig1
+      AAAAAGGGGGCCCCCTTTTT
+      > insert1
+      TTTT
+      """
+    Given a file named "anno.gff" with:
+      """
+      ##gff-version 3
+      contig1	.	CDS	4	13	.	+	1	ID=gene1
+      """
+    When I relocate the annotations using "scaf.yml", "seq.fna" and "anno.gff"
+    Then the result should be:
+      """
+      ##gff-version 3
+      """

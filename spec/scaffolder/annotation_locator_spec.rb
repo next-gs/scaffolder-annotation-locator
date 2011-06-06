@@ -170,6 +170,18 @@ describe Scaffolder::AnnotationLocator do
 
     end
 
+    describe "with an annotation in a stop trimmed region" do
+
+      subject do
+        relocate([@contig.clone.stop(5)],[@record])
+      end
+
+      it "should not include this annotation" do
+        subject.should be_empty
+      end
+
+    end
+
   end
 
   describe "relocating two contigs" do

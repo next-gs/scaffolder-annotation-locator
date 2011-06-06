@@ -20,7 +20,9 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
           # Don't include this record if it overlaps with an insert
           next if record.overlap?(entry.inserts.map{|i| (i.open..i.close)})
 
+          # Skip this record it lies in the start or stop trimmed regions
           next if record.start < entry.start
+          next if record.end   > entry.stop
 
           # Update record location by size differences of prior inserts
           entry.inserts.select {|i| i.close < record.start }.each do |insert|
