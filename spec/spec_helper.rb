@@ -22,8 +22,8 @@ RSpec.configure do |config|
        a[:end], nil, a[:strand],  a[:phase])
     end
 
-    tmp = Tempfile.new("gff").path
-    File.open(tmp,'w'){ |out| out.print(gff) }
+    tmp = Tempfile.new("gff")
+    File.open(tmp.path,'w'){ |out| out.print(gff) }
     tmp
   end
 
