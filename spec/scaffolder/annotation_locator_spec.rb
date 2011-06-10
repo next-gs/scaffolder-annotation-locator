@@ -5,7 +5,7 @@ describe Scaffolder::AnnotationLocator do
   def relocate(scaffold,records)
     @scaffold_file, @sequence_file = generate_scaffold_files(scaffold)
     described_class.new(@scaffold_file.path, @sequence_file.path,
-                        generate_gff3_file(records))
+                        generate_gff3_file(records).path)
   end
 
   before do
@@ -70,6 +70,115 @@ describe Scaffolder::AnnotationLocator do
 
       it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
       it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
+
+    end
+
+    describe "with an insert before an annotation" do
+
+      subject do
+        relocate([@contig.clone.inserts(:open => 1, :close => 2, :sequence => 'TTT')],
+                 [@record])
+      end
+
+      it{ should set_the_attribute(:seqname => 'scaffold') }
+      it{ should set_the_attribute(:phase   => 1) }
+      it{ should set_the_attribute(:strand  => '+') }
+
+      it{ should set_the_attribute(:start   => 5).only_for_the(:first) }
+      it{ should set_the_attribute(:end     => 7).only_for_the(:first) }
+
+    end
+
+    describe "with an insert after an annotation" do
+
+      subject do
+        relocate([@contig.clone.
+                   inserts(:open => 7, :close => 8, :sequence => 'TTT').
+                   sequence('ATGTTTCCC')],
+                 [@record])
+      end
+
+      it{ should set_the_attribute(:seqname => 'scaffold') }
+      it{ should set_the_attribute(:phase   => 1) }
+      it{ should set_the_attribute(:strand  => '+') }
+
+      it{ should set_the_attribute(:start   => 4).only_for_the(:first) }
+      it{ should set_the_attribute(:end     => 6).only_for_the(:first) }
+
+    end
+
+    describe "with an insert before and after an annotation" do
+
+      subject do
+        relocate([@contig.clone.
+                   inserts(:open => 1, :close => 2, :sequence => 'TTT').
+                   inserts(:open => 7, :close => 8, :sequence => 'TTT').
+                   sequence('ATGTTTCCC')],
+                 [@record])
+      end
+
+      it{ should set_the_attribute(:seqname => 'scaffold') }
+      it{ should set_the_attribute(:phase   => 1) }
+      it{ should set_the_attribute(:strand  => '+') }
+
+      it{ should set_the_attribute(:start   => 5).only_for_the(:first) }
+      it{ should set_the_attribute(:end     => 7).only_for_the(:first) }
+
+    end
+
+    describe "reversed with an insert before an annotation" do
+
+      subject do
+        contig = @contig.clone.
+                 reverse(true).
+                 inserts(:open => 1, :close => 2, :sequence => 'TTT')
+        relocate([contig],[@record])
+      end
+
+      it{ should set_the_attribute(:seqname => 'scaffold') }
+      it{ should set_the_attribute(:phase   => 1) }
+      it{ should set_the_attribute(:strand  => '-') }
+
+      it{ should set_the_attribute(:start   => 1).only_for_the(:first) }
+      it{ should set_the_attribute(:end     => 3).only_for_the(:first) }
+
+    end
+
+    describe "with an insert overlapping with an annotation" do
+
+      subject do
+        relocate([@contig.clone.
+                   inserts(:open => 3, :close => 5, :sequence => 'TTT')],
+                 [@record])
+      end
+
+      it "should not include this annotation" do
+        subject.should be_empty
+      end
+
+    end
+
+    describe "with an annotation in a start trimmed region" do
+
+      subject do
+        relocate([@contig.clone.start(5)],[@record])
+      end
+
+      it "should not include this annotation" do
+        subject.should be_empty
+      end
+
+    end
+
+    describe "with an annotation in a stop trimmed region" do
+
+      subject do
+        relocate([@contig.clone.stop(5)],[@record])
+      end
+
+      it "should not include this annotation" do
+        subject.should be_empty
+      end
 
     end
 
@@ -199,18 +308,6 @@ describe Scaffolder::AnnotationLocator do
     it "should return the gff records grouped by sequence" do
       subject['c1'].length.should == 1
       subject['c2'].length.should == 1
-    end
-
-  end
-
-  describe "#flip_strand" do
-
-    it "should return '+' when passed '-'" do
-      described_class.flip_strand('+').should == '-'
-    end
-
-    it "should return '-' when passed '+'" do
-      described_class.flip_strand('-').should == '+'
     end
 
   end

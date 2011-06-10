@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 group :default do
-  gem "scaffolder", "~> 0.4"
+  gem "scaffolder", "0.4.3"
 end
 
 group :development do
@@ -9,7 +9,7 @@ group :development do
   gem "jeweler",  "~> 1.5"
 
   gem "rspec",                   "~> 2.4"
-  gem "scaffolder-test-helpers",    "0.2.2"
+  gem "scaffolder-test-helpers",    "0.3.0"
   gem "cucumber",                "~> 0.9"
   gem "aruba",                   "~> 0.2"
 
