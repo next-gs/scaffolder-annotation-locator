@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Barton"]
-  s.date = %q{2011-06-06}
+  s.date = %q{2011-06-10}
   s.description = %q{Build a genome scaffold using scaffolder and a set of annotated contigs. This tool updates the locations of the contig annotations using the scaffolder tempalte as a base.}
   s.email = %q{mail@michaelbarton.me.uk}
   s.extra_rdoc_files = [
