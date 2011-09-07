@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 group :default do
   gem "scaffolder", "0.4.3"
+  gem "psych",      "~> 1.2.1"
 end
 
 group :development do
