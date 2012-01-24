@@ -1,7 +1,9 @@
 source "http://rubygems.org"
 
 group :default do
-  gem "scaffolder", "0.4.3"
+  gem "scaffolder", ">= 0.4.3"
+  gem "bio",        "~> 1.4"
+  gem "psych"
 end
 
 group :development do
