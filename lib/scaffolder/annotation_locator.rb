@@ -1,7 +1,6 @@
 require 'delegate'
 require 'scaffolder'
 require 'bio'
-require 'psych'
 
 require 'scaffolder/extensions'
 
@@ -52,7 +51,7 @@ class Scaffolder::AnnotationLocator < DelegateClass(Array)
   end
 
   def scaffold
-    Scaffolder.new(Psych.load(File.read(@scaffold_file)),@sequence_file)
+    Scaffolder.new(YAML.load(File.read(@scaffold_file)),@sequence_file)
   end
 
   def records
