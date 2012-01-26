@@ -7,6 +7,7 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
+require 'rake/dsl_definition'
 require 'rake'
 
 require 'jeweler'
@@ -17,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = %Q{Update locations of gff3 annotations from a scaffolder template}
   gem.description = %Q{Build a genome scaffold using scaffolder and a set of annotated contigs. This tool updates the locations of the contig annotations using the scaffolder tempalte as a base.}
-  gem.email = "mail@michaelbarton.me.uk"
+  gem.email = "mail@next.gs"
   gem.authors = ["Michael Barton"]
 end
 Jeweler::RubygemsDotOrgTasks.new
