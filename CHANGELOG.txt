@@ -1,0 +1,5 @@
+0.1.2
+
+  * Remove jeweler from project and use bundler tasks instead.
+  * Update to 1.1.3 version of bundler.
+  * Use syck YAML parser to resolve psych errors.
