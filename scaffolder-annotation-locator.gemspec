@@ -1,8 +1,11 @@
 # -*- encoding: utf-8 -*-
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
+
+require "scaffolder/annotation_locator/version"
 
 Gem::Specification.new do |s|
   s.name        = "scaffolder-annotation-locator"
-  s.version     = "0.1.1"
+  s.version     = Scaffolder::AnnotationLocator::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Michael Barton"]
   s.email       = "mail@next.gs"
